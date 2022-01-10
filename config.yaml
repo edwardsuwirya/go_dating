@@ -1,0 +1,7 @@
+datingapp:
+  name: "Dating App"
+  api:
+    group: "/api"
+    version: "/v2"
+    url: "localhost:8888"
+
