@@ -6,7 +6,7 @@ import (
 )
 
 type MemberAccessRepo interface {
-	FindByUserNameAndPassword(userName string, password string) (*entity.MemberUserAccess, error)
+	FindByUserNameAndPassword(userName string, password string) (bool, error)
 	UpdateVerification(id string) error
 	Create(newAccess *entity.MemberUserAccess) error
 }
@@ -14,9 +14,12 @@ type MemberAccessRepo interface {
 type memberAccessRepo struct {
 }
 
-func (m *memberAccessRepo) FindByUserNameAndPassword(userName string, password string) (*entity.MemberUserAccess, error) {
+func (m *memberAccessRepo) FindByUserNameAndPassword(userName string, password string) (bool, error) {
 	logger.Log.Debug().Msgf("Authenticate %s", userName)
-	return nil, nil
+	if userName == "edo" && password == "12345678" {
+		return true, nil
+	}
+	return false, nil
 }
 
 func (m *memberAccessRepo) UpdateVerification(id string) error {
