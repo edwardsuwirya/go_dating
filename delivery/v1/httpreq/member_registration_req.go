@@ -3,6 +3,7 @@ package httpreq
 import (
 	"fmt"
 	"github.com/edwardsuwirya/go_dating/entity"
+	"github.com/google/uuid"
 	"time"
 )
 
@@ -15,11 +16,13 @@ func (p *MemberRegistrationReq) String() string {
 	return fmt.Sprintf("MemberRegistrationReq => Email: %s, Password: %s", p.Email, p.Password)
 }
 
-func (p *MemberRegistrationReq) ToMemberUserAccess() *entity.MemberUserAccess {
+func (p *MemberRegistrationReq) ToMemberUserAccessForRegistration() *entity.MemberUserAccess {
+	joinDate := time.Now().Local()
 	return &entity.MemberUserAccess{
 		UserName:           p.Email,
 		Password:           p.Password,
-		JoinDate:           time.Now().Local(),
+		MemberId:           uuid.New().String(),
+		JoinDate:           &joinDate,
 		VerificationStatus: "N",
 	}
 }

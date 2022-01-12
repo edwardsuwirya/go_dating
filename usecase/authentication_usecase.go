@@ -13,7 +13,7 @@ type authenticationUseCase struct {
 }
 
 func (m *authenticationUseCase) Login(loginReq *httpreq.LoginReq) (bool, error) {
-	return m.repo.FindByUserNameAndPassword(loginReq.UserName, loginReq.Password)
+	return m.repo.FindByUserNameAndPasswordAndVerified(loginReq.UserName, loginReq.Password)
 }
 
 func NewAuthenticationUseCase(repo repository.MemberAccessRepo) AuthenticationUseCase {

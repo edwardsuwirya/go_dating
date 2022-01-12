@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/edwardsuwirya/go_dating/delivery/v1/httpreq"
 	resp "github.com/edwardsuwirya/go_dating/delivery/v1/httpresp"
+	"github.com/edwardsuwirya/go_dating/entity"
 	"github.com/edwardsuwirya/go_dating/usecase"
 	"github.com/edwardsuwirya/go_dating/util/logger"
 	"github.com/gofiber/fiber/v2"
@@ -22,13 +23,15 @@ func (m *MemberApi) memberRegistration() fiber.Handler {
 		newReq := new(httpreq.MemberRegistrationReq)
 		jResp, _ := m.ParseRequestBody(ctx, newReq)
 		logger.Log.Debug().Msg(newReq.String())
-		newMember := newReq.ToMemberUserAccess()
+		newMember := newReq.ToMemberUserAccessForRegistration()
 		err := m.memberRegistrationUseCase.NewRegistration(newMember)
 		if err != nil {
 			logger.Log.Err(err).Msg("Registration Failed")
 			return jResp.SendError(resp.NewErrorMessage(http.StatusInternalServerError, "", "Registration Failed"))
 		}
-		return jResp.SendData(resp.NewResponseMessage("", "Member Registration Success", newMember))
+		return jResp.SendData(resp.NewResponseMessage("", "Member Registration Success", entity.MemberUserAccess{
+			MemberId: newMember.MemberId,
+		}))
 	}
 }
 
@@ -76,18 +79,19 @@ func (m *MemberApi) updateProfile() fiber.Handler {
 	}
 }
 
-func (m *MemberApi) updatePreference() fiber.Handler {
+func (m *MemberApi) createPreference() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		newReq := new(httpreq.MemberPreferenceReq)
 		jResp, _ := m.ParseRequestBody(ctx, newReq)
 		logger.Log.Debug().Msg(newReq.String())
 		memberPref := newReq.ToMemberPreference()
-		member, err := m.memberPreferenceUseCase.UpdatePreference(memberPref)
+		memberInterest := newReq.ToMemberInterest()
+		err := m.memberPreferenceUseCase.CreatePreference(memberPref, memberInterest)
 		if err != nil {
 			logger.Log.Err(err).Msg("Update profile Failed")
-			return jResp.SendError(resp.NewErrorMessage(http.StatusInternalServerError, "", "Update profile Failed"))
+			return jResp.SendError(resp.NewErrorMessage(http.StatusInternalServerError, "", "Create preference Failed"))
 		}
-		return jResp.SendData(resp.NewResponseMessage("", "Update profile Success", member))
+		return jResp.SendData(resp.NewResponseMessage("", "Create preference Success", struct{}{}))
 	}
 }
 
@@ -103,8 +107,12 @@ func NewMemberApi(rg fiber.Router, memberRegistrationUseCase usecase.MemberRegis
 	memberGroup := rg.Group("/member")
 	memberGroup.Post("/registration", memberApi.memberRegistration())
 	memberGroup.Get("/activation", memberApi.memberActivation())
-	memberGroup.Put("/profile", memberApi.updateProfile())
-	memberGroup.Get("/profile", memberApi.getProfile())
-	memberGroup.Post("/preference", memberApi.updatePreference())
+
+	profileGroup := memberGroup.Group("/profile")
+	profileGroup.Put("", memberApi.updateProfile())
+	profileGroup.Get("", memberApi.getProfile())
+
+	preferenceGroup := memberGroup.Group("/preference")
+	preferenceGroup.Post("", memberApi.createPreference())
 	return nil
 }

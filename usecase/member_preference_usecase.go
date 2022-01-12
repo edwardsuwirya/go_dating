@@ -6,14 +6,14 @@ import (
 )
 
 type MemberPreferenceUseCase interface {
-	UpdatePreference(memberPref *entity.MemberPreferences) (*entity.MemberPreferences, error)
+	CreatePreference(memberPref *entity.MemberPreferences, memberInterest []entity.MemberInterest) error
 }
 type memberPreferenceUseCase struct {
 	prefRepo repository.MemberPreferenceRepo
 }
 
-func (m *memberPreferenceUseCase) UpdatePreference(memberPref *entity.MemberPreferences) (*entity.MemberPreferences, error) {
-	return m.prefRepo.Create(memberPref)
+func (m *memberPreferenceUseCase) CreatePreference(memberPref *entity.MemberPreferences, memberInterest []entity.MemberInterest) error {
+	return m.prefRepo.Create(memberPref, memberInterest)
 }
 
 func NewMemberPreferenceUseCase(repo repository.MemberPreferenceRepo) MemberPreferenceUseCase {

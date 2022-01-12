@@ -5,9 +5,9 @@ import (
 )
 
 type MemberUserAccess struct {
-	UserName           string
-	Password           string
-	MemberId           string
-	JoinDate           time.Time
-	VerificationStatus string
+	UserName           string     `json:"userName,omitempty"`
+	Password           string     `json:"password,omitempty"`
+	MemberId           string     `json:"memberId"`
+	JoinDate           *time.Time `json:"joinDate,omitempty"`
+	VerificationStatus string     `json:"verificationStatus,omitempty"`
 }
