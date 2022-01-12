@@ -1,7 +1,7 @@
 package entity
 
 type Member struct {
-	MemberPersonalInformation
-	MemberAddressInformation
-	MemberContactInformation
+	PersonalInfo MemberPersonalInformation
+	AddressInfo  MemberAddressInformation
+	ContactInfo  MemberContactInformation
 }

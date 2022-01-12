@@ -1,7 +1,9 @@
 package entity
 
 type MemberAddressInformation struct {
-	Address    string
-	City       string
-	PostalCode string
+	MemberAddressId string
+	MemberId        string
+	Address         string
+	City            string
+	PostalCode      string
 }
