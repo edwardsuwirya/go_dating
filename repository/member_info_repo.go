@@ -60,6 +60,7 @@ func (m *memberInfoRepo) Create(newMember *entity.Member) (*entity.Member, error
 		newMember.PersonalInfo.MemberId, newMember.ContactInfo.MobilePhoneNumber, newMember.ContactInfo.InstagramId, newMember.ContactInfo.TwitterId)
 
 	if err != nil {
+		logger.Log.Error().Err(err).Msg("Failed update profile member")
 		return nil, err
 	}
 	return newMember, nil

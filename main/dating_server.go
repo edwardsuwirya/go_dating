@@ -39,6 +39,10 @@ func (d *datingServer) v1(rg fiber.Router) {
 	if err != nil {
 		logger.Log.Fatal().Msg("Authentication failed to start")
 	}
+	err = v1.NewPartnerFinderApi(rg, d.useCase.PartnerFinderUseCase())
+	if err != nil {
+		logger.Log.Fatal().Msg("Partner Finder failed to start")
+	}
 }
 func (d *datingServer) Run() {
 	apiUrl := d.infra.Config().GetString("datingapp.api.url")
