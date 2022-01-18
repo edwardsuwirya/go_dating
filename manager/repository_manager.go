@@ -6,6 +6,7 @@ type RepositoryManager interface {
 	MemberInfoRepo() repository.MemberInfoRepo
 	MemberAccessRepo() repository.MemberAccessRepo
 	MemberPreferenceRepo() repository.MemberPreferenceRepo
+	PartnerRepo() repository.PartnerRepo
 }
 
 type repositoryManager struct {
@@ -22,7 +23,9 @@ func (r *repositoryManager) MemberAccessRepo() repository.MemberAccessRepo {
 func (r *repositoryManager) MemberPreferenceRepo() repository.MemberPreferenceRepo {
 	return repository.NewMemberPreferenceRepo(r.infraManager.SqlDb())
 }
-
+func (r *repositoryManager) PartnerRepo() repository.PartnerRepo {
+	return repository.NewPartnerRepo(r.infraManager.SqlDb())
+}
 func NewRepoManager(infraManager InfraManager) RepositoryManager {
 	return &repositoryManager{infraManager: infraManager}
 }

@@ -10,9 +10,9 @@ CREATE TABLE "public"."member_access"
 );
 CREATE UNIQUE INDEX "member_user_name_uq" ON "public"."member_access" USING BTREE ("user_name");
 INSERT INTO "public"."member_access"(member_id, user_name, user_password, join_date, verification_status)
-VALUES ('0c490c0f-13d7-4acc-85d8-bb9f9bfcc53f', 'Vivien_Pfeffer@hotmail.com', 'v60lXypb_XaBfCU', '2022-01-11', 'N');
+VALUES ('0c490c0f-13d7-4acc-85d8-bb9f9bfcc53f', 'doni@enigmacamp.com', 'v60lXypb_XaBfCU', '2022-01-11', 'N');
 INSERT INTO "public"."member_access"(member_id, user_name, user_password, join_date, verification_status)
-VALUES ('a9127c2f-f878-40ab-8903-917954ab814c', 'Arnold_Hagenes@hotmail.com', '8BOMGK1idWdUz76', '2022-01-11', 'Y');
+VALUES ('a9127c2f-f878-40ab-8903-917954ab814c', 'tika@enigmacamp.com', '8BOMGK1idWdUz76', '2022-01-11', 'Y');
 
 CREATE TABLE "public"."member_preference"
 (

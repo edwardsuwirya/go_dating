@@ -7,6 +7,7 @@ type UseCaseManager interface {
 	MemberProfileUseCase() usecase.MemberProfileUseCase
 	MemberPreferenceUseCase() usecase.MemberPreferenceUseCase
 	AuthUseCase() usecase.AuthenticationUseCase
+	PartnerFinderUseCase() usecase.PartnerFinderUseCase
 }
 
 type useCaseManager struct {
@@ -25,6 +26,10 @@ func (uc *useCaseManager) MemberPreferenceUseCase() usecase.MemberPreferenceUseC
 func (uc *useCaseManager) AuthUseCase() usecase.AuthenticationUseCase {
 	return usecase.NewAuthenticationUseCase(uc.repo.MemberAccessRepo())
 }
+func (uc *useCaseManager) PartnerFinderUseCase() usecase.PartnerFinderUseCase {
+	return usecase.NewPartnerFinderUseCase(uc.repo.PartnerRepo(), uc.repo.MemberPreferenceRepo())
+}
+
 func NewUseCaseManger(manager RepositoryManager) UseCaseManager {
 	return &useCaseManager{repo: manager}
 }
