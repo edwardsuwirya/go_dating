@@ -15,10 +15,11 @@ const (
 
 type InfraManager interface {
 	Config() *viper.Viper
-	SqlDb() *pgx.Conn
+	GetSqlConn() *pgx.Conn
 }
 
 type infraManager struct {
+	conn *pgx.Conn
 }
 
 func (i *infraManager) Config() *viper.Viper {
@@ -37,7 +38,7 @@ func (i *infraManager) Config() *viper.Viper {
 	return viper.GetViper()
 }
 
-func (i *infraManager) SqlDb() *pgx.Conn {
+func (i *infraManager) sqlDb() {
 	dbName := i.Config().GetString("datingapp.db.name")
 	dbHost := i.Config().GetString("datingapp.db.host")
 	dbPort := i.Config().GetString("datingapp.db.port")
@@ -49,11 +50,16 @@ func (i *infraManager) SqlDb() *pgx.Conn {
 	if err != nil {
 		logger.Log.Fatal().Msg("DB failed to start")
 	}
-	return conn
+	i.conn = conn
+}
+
+func (i *infraManager) GetSqlConn() *pgx.Conn {
+	return i.conn
 }
 
 func NewInfra() InfraManager {
 	logger.NewLogger()
 	newInfra := &infraManager{}
+	newInfra.sqlDb()
 	return newInfra
 }

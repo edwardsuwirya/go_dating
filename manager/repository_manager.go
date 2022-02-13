@@ -14,17 +14,17 @@ type repositoryManager struct {
 }
 
 func (r *repositoryManager) MemberInfoRepo() repository.MemberInfoRepo {
-	return repository.NewMemberPersonalInfoRepo(r.infraManager.SqlDb())
+	return repository.NewMemberPersonalInfoRepo(r.infraManager.GetSqlConn())
 }
 
 func (r *repositoryManager) MemberAccessRepo() repository.MemberAccessRepo {
-	return repository.NewMemberAccessRepo(r.infraManager.SqlDb())
+	return repository.NewMemberAccessRepo(r.infraManager.GetSqlConn())
 }
 func (r *repositoryManager) MemberPreferenceRepo() repository.MemberPreferenceRepo {
-	return repository.NewMemberPreferenceRepo(r.infraManager.SqlDb())
+	return repository.NewMemberPreferenceRepo(r.infraManager.GetSqlConn())
 }
 func (r *repositoryManager) PartnerRepo() repository.PartnerRepo {
-	return repository.NewPartnerRepo(r.infraManager.SqlDb())
+	return repository.NewPartnerRepo(r.infraManager.GetSqlConn())
 }
 func NewRepoManager(infraManager InfraManager) RepositoryManager {
 	return &repositoryManager{infraManager: infraManager}
